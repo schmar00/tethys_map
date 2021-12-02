@@ -1,6 +1,14 @@
 let USER_LANG = (navigator.language || navigator.language).substring(0, 2);
 let map = L.map('map').setView([47.7, 13.5], 7);
 
+$( "#loadOAI" ).click(function() {
+  $('.loading').show();
+  getData();
+});
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
 document.addEventListener("DOMContentLoaded", function (event) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -23,7 +31,7 @@ async function getData() {
   //let completeListSize = '';
   let allData = [];
 
-  for (i = 0; i < 9; i++) {
+  for (i = 0; i < 20; i++) {
     const contents = await $.getScript("load.php" + resumptionToken, function (data, textStatus, jqxhr) {
       console.log(data);
       //remove xml part after </OAI-PMH>
@@ -55,7 +63,7 @@ async function getData() {
       body: `newData=${'const oaiArr = ' + JSON.stringify(allData) + ';'}`,
     })
     .then((response) => response.text())
-    .then((res) => (alert('updated')));
+    .then((res) => {alert('OAI aktualisiert'); $('.loading').hide();});
 
 }
 
@@ -66,7 +74,7 @@ function createMap() {
     subdomains: ['maps', 'maps1', 'maps2', 'maps3', 'maps4'],
     attribution: '&copy; <a href="http://basemap.at">Basemap.at</a>, <a href="http://www.geologie.ac.at">Geologie.ac.at</a>'
   }).addTo(map);
-
+  $('.loading').hide();
   /* L.tileLayer(
     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
       maxZoom: 18,
@@ -92,17 +100,14 @@ function mapData() {
     let blattWidth = oaiArr[i].coverage[3] - oaiArr[i].coverage[1];
     //console.log(blattWidth, oaiArr[i].title, bounds);
 
-
-
-
     L.rectangle(bounds, {
       'color': (/GEOFAST/g).test(oaiArr[i].title) ? 'red' : 'green',
       'fill': (blattWidth > 0.3) ? false : true,
       'weight': (blattWidth > 0.3) ? 3 : 1
-    }).addTo(map).bindPopup(`<a href="${oaiArr[i].doi}">${oaiArr[i].doi}</a>
-                                <p><strong>${txt2html(oaiArr[i].title)}</strong>
-                                  <br>publ.${oaiArr[i].date.substr(0, 4)} by ${txt2html(oaiArr[i].creator.map(a=>a.replace(',','')).join(', '))}
-                                </p>`);
+    }).addTo(map).bindPopup(txt2html(`<a href="${oaiArr[i].doi}">${oaiArr[i].doi}</a>
+                                <p><strong>${oaiArr[i].title}</strong>
+                                  <br>publ.${oaiArr[i].date.substr(0, 4)} by ${oaiArr[i].creator.map(a=>a.replace(',','')).join(', ')}
+                                </p>`));
     //console.log(txt2html(allData[i].title));
   }
   let popup = L.popup();
