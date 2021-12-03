@@ -31,7 +31,7 @@ async function getData() {
   let allData = [];
 
   for (i = 0; i < 11; i++) {
-    const contents = await $.getScript("load.php" + resumptionToken, function (data, textStatus, jqxhr) {
+    const contents = await $.getScript("https://resource.geolba.net/tethys/tethys_oai_dublincore.php" + resumptionToken, function (data, textStatus, jqxhr) {
       //console.log(data);
       //remove xml part after </OAI-PMH>
       let parser = new DOMParser(),
@@ -54,7 +54,7 @@ async function getData() {
   }
   //console.log(allData);
 
-  fetch("update.php", {
+  fetch("https://resource.geolba.net/tethys/update_listrecords.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
