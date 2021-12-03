@@ -103,9 +103,9 @@ function mapData() {
     let blattWidth = oaiArr[i].coverage[3] - oaiArr[i].coverage[1];
     //console.log(blattWidth, oaiArr[i].title, bounds);
     title = $('<div>').text(oaiArr[i].title).html();
-    title = decodeHtml(title);
+    //title = decodeHtml(title);
     creators = $('<div>').text(oaiArr[i].creator.map(a=>a.replace(',','')).join(', ')).html();
-    creators = decodeHtml(creators);
+    //creators = decodeHtml(creators);
 
     L.rectangle(bounds, {
       'color': (/GEOFAST/g).test(oaiArr[i].title) ? 'red' : 'green',
