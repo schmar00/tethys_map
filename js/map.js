@@ -58,8 +58,8 @@ function mapData() {
       'weight': (blattWidth > 0.3) ? 3 : 1
     }).addTo(map).bindPopup(`<p>DOI: <a href="https://doi.org/${tethys[i].doi}">${tethys[i].doi}</a>
                               <br><strong>${tethys[i].title}</strong><br>
-                              publ. by ${tethys[i].creator}<br>
-                              and ${tethys[i].contributor}
+                              publ.: ${tethys[i].creator}<br>
+                              und ${tethys[i].contributor}
                             </p>`);
 
   }
