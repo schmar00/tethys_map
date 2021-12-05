@@ -42,6 +42,10 @@ function createMap() {
 }
 
 function mapData() {
+  map.createPane('bottom');
+  map.getPane('bottom').style.zIndex = 550;
+  map.createPane('top');
+  map.getPane('top').style.zIndex = 650;
 
   for (let i in tethys) {
 
@@ -50,12 +54,13 @@ function mapData() {
       [tethys[i].north, tethys[i].east]
     ];
 
-    let blattWidth = tethys[i].east - tethys[i].west;
+    let bW = tethys[i].east - tethys[i].west;
 
     L.rectangle(bounds, {
       'color': (/GEOFAST/g).test(tethys[i].title) ? 'red' : 'green',
-      'fill': (blattWidth > 0.3) ? false : true,
-      'weight': (blattWidth > 0.3) ? 3 : 1
+      'fill': (bW > 0.3) ? false : true,
+      'weight': ((bW > 0.3) || (bW < 0.03)) ? 3 : 1,
+      'pane': (bW > 0.2) ? 'bottom' : 'top'
     }).addTo(map).bindPopup(`<p>DOI: <a href="https://doi.org/${tethys[i].doi}">${tethys[i].doi}</a>
                               <br><strong>${tethys[i].title}</strong><br>
                               publ.: ${tethys[i].creator}<br>
