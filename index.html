@@ -61,7 +61,7 @@
         <img style="padding-bottom: 8px;" src="https://repository.geologie.ac.at/img/TETHYS-Logo.f04915ca.svg"
           alt="tethys logo" width="100">
       </a>
-      <span class="fs-4">&nbsp;&nbsp;&nbsp;Map</span>
+      &nbsp;&nbsp;&nbsp;<span id="heading" class="fs-4">Map</span>
       <button title="via OAI aktualisieren" data-toggle="tooltip" data-placement="left" id="loadOAI" style="float: right; margin-top: 7px;" type="button" class="btn btn-outline-primary btn-sm">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise"
           viewBox="0 0 16 16">
@@ -86,8 +86,9 @@
           <h2>Map views</h2>
           <p>Ready to beyond the starter map? Check out these map views that you can quickly access.</p>
           <ul class="icon-list">
-            <li><a href="" rel="noopener" target="_blank">GK50 Kartendaten</a></li>
-            <li class="text-muted">Geofast Datens&auml;tze</li>
+            <li><a href="javascript:window.open(window.location.href.split('?')[0],'_self')">alle Datenpublikationen</a></li>
+            <li><a href="javascript:window.open(window.location.href.split('?')[0]+'?layer=gk50','_self')">GK50 Kartendaten</a></li>
+            <li><a href="javascript:window.open(window.location.href.split('?')[0]+'?layer=geofast','_self')">Geofast Datens&auml;tze</a></li>
           </ul>
         </div>
 
@@ -95,9 +96,9 @@
           <h2>Catalog views</h2>
           <p>Read more detailed documentation on using the Tethys Research Data Repository.</p>
           <ul class="icon-list">
-            <li><a href="">GK50 Kartendaten</a></li>
-            <li><a href="">Geofast Datenpublikationen</a></li>
-            <li><a href="">Rohstoff Geologie</a></li>
+            <li><a href="https://tethys.at">GK50 Kartendaten</a></li>
+            <li><a href="https://tethys.at">Geofast Datenpublikationen</a></li>
+            <li><a href="https://tethys.at">Rohstoff Geologie</a></li>
           </ul>
         </div>
       </div>

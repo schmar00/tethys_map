@@ -1,5 +1,7 @@
 let USER_LANG = (navigator.language || navigator.language).substring(0, 2);
+let LAYER = 'Map';
 let map = L.map('map').setView([47.7, 13.5], 7);
+console.log(window.location.href.split('?')[0]);
 
 $("#loadOAI").click(function () {
   $('.loading').show();
@@ -16,6 +18,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   if (urlParams.has('lang')) {
     USER_LANG = urlParams.get('lang');
+  }
+
+  if (urlParams.has('layer')) {
+    LAYER = urlParams.get('layer');
+    document.getElementById('heading').innerHTML = LAYER;
   }
 
   createMap();
@@ -48,27 +55,41 @@ function mapData() {
   map.getPane('top').style.zIndex = 650;
 
   for (let i in tethys) {
-
-    let bounds = [
-      [tethys[i].south, tethys[i].west],
-      [tethys[i].north, tethys[i].east]
-    ];
-
-    let bW = tethys[i].east - tethys[i].west;
-
-    L.rectangle(bounds, {
-      'color': (/GEOFAST/g).test(tethys[i].title) ? 'red' : 'green',
-      'fill': (bW > 0.3) ? false : true,
-      'weight': ((bW > 0.3) || (bW < 0.03)) ? 3 : 1,
-      'pane': (bW > 0.2) ? 'bottom' : 'top'
-    }).addTo(map).bindPopup(`<p>DOI: <a href="https://doi.org/${tethys[i].doi}">${tethys[i].doi}</a>
-                              <br><strong>${tethys[i].title}</strong><br>
-                              publ.: ${tethys[i].creator}<br>
-                              und ${tethys[i].contributor}
-                            </p>`);
-
+    switch (LAYER) {
+      case 'gk50':
+        if ((/GK50/g).test(tethys[i].subject) || (/GK 50/g).test(tethys[i].subject)) {
+          addPolygon(i);
+        }
+        break;
+      case 'geofast':
+        if ((/GEOFAST/g).test(tethys[i].title)) {
+          addPolygon(i);
+        }
+        break;
+      default:
+        addPolygon(i);
+    }
   }
   let popup = L.popup();
   $('#loading').hide();
+}
 
+function addPolygon(i) {
+  let bounds = [
+    [tethys[i].south, tethys[i].west],
+    [tethys[i].north, tethys[i].east]
+  ];
+
+  let bW = tethys[i].east - tethys[i].west;
+
+  L.rectangle(bounds, {
+    'color': (/GEOFAST/g).test(tethys[i].title) ? 'red' : 'green',
+    'fill': (bW > 0.3) ? false : true,
+    'weight': ((bW > 0.3) || (bW < 0.03)) ? 3 : 1,
+    'pane': (bW > 0.2) ? 'bottom' : 'top'
+  }).addTo(map).bindPopup(`<p>DOI: <a href="https://doi.org/${tethys[i].doi}">${tethys[i].doi}</a>
+                            <br><strong>${tethys[i].title}</strong><br>
+                            publ.: ${tethys[i].creator}<br>
+                            und ${tethys[i].contributor}
+                          </p>`);
 }
