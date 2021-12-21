@@ -1,7 +1,7 @@
 let USER_LANG = (navigator.language || navigator.language).substring(0, 2);
 let LAYER = 'Map';
 let map = L.map('map').setView([47.7, 13.5], 7);
-console.log(window.location.href.split('?')[0]);
+//console.log(window.location.href.split('?')[0]);
 
 $("#loadOAI").click(function () {
   $('.loading').show();
